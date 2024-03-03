@@ -91,3 +91,38 @@ Now, you can create a new virtual environment for your project by running the fo
 '''bash
 poetry new .
 '''
+
+You should see a file named .python-version created in your folder. That's good.
+
+Now were are going to initialize Poetry project with:
+poetry new .
+or
+poetry init
+for and existing project
+
+This will create a new directory with the name of your project and a few files inside. The most important one is pyproject.toml. This is where you will define your project's dependencies.
+
+Now let's add the Django dependency and try running the test server. So, to add a dependency in a Poetry project you just simply do:
+
+'''bash
+poetry add Django
+'''
+
+'''bash
+poetry run django-admin.py startproject basic_django .
+'''
+
+Note: in Ubuntu, i runned the comand poetry run django-admin startproject lukasScrapper . insteadf of poetry run django-admin.py startproject basic_django .
+
+This will create a new Django project in your current directory. You can now run the test server by running the following command:
+
+'''bash
+poetry run python manage.py runserver
+'''
+If successful, you should see the following output:
+
+'''bash
+Watching for file changes with StatReloader
+Performing system checks...
+
+![alt text](image.png)
