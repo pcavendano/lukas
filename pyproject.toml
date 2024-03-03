@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "lukas"
+name = "lukas-webscrapper"
 version = "0.1.0"
 description = ""
 authors = ["Pedro Contreras Avendano <pedro.contreras.avendano@gmail.com>"]
