@@ -290,7 +290,7 @@ The most used commnads:
 
 poetry run python manage.py runserver
 
-The urls.py file in the lukasDjango is where you add routes
+The urls.py file in the core is where you add routes
 
 to add a new app we can use
 
@@ -310,7 +310,7 @@ URL routng
 
 normally all of our routes are going to be handled by views.py file inside webscrapper app
 
-Go to urls.py in lukasDjango and 
+Go to urls.py in core and 
 
 > poetry run python manage.py makemigrations
 
