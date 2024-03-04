@@ -307,3 +307,9 @@ URL routng
 normally all of our routes are going to be handled by views.py file inside webscrapper app
 
 Go to urls.py in lukasDjango and 
+
+> poetry run python manage.py makemigrations
+
+> poetry run python manage.py migrate
+
+> poetry run python manage.py createsuperuser
