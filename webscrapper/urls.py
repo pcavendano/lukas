@@ -4,5 +4,6 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('scrapper/', views.scrappe, name='scrapper'),
+    path('scrappe/', views.scrappe, name='scrapper'),
+    path('device/<str:pk>', views.device, name='device'),
 ]
