@@ -1,5 +1,9 @@
 Sources
 
+Inital Django Set up
+https://www.youtube.com/watch?v=DaxcmbWcdTA
+
+
 https://builtwithdjango.com/blog/basic-django-setup
 
 
