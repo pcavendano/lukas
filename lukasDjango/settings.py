@@ -55,7 +55,9 @@ ROOT_URLCONF = 'lukasDjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates' # This is where we tell Django to look for our templates
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
