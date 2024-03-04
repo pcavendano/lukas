@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>Scrape a device</h1>
-  <form method="post">
+  <form method="post" action="">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="hidden" name="next" value="{% url 'home' %}">
