@@ -1,8 +1,13 @@
 from django.shortcuts import render
 # Create your views here.
 
+smartphones_data = [
+    { 'id':1}
+]
+
 def home(requests):
-    return render(requests, 'base.html', {'name': 'Lukas'})
+    context = {'smartphones_data':smartphones_data}
+    return render(requests, 'webscrapper/home.html', context)
 
 def scrappe(requests):
-    return render(requests, 'scrappe.html', {'name': 'Lukas'})
+    return render(requests, 'webscrapper/scrapper.html')

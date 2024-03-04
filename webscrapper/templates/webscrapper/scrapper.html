@@ -1,0 +1,8 @@
+{% extends 'main.html' %}
+
+{% block content %}
+  <h1>Helllloooooo! scrapper</h1>
+  <form action="/scrapper" method="post">
+    <input type="text" name="url" placeholder="Enter URL">
+    <input type="submit" value="Scrap">
+{% endblock content %}
