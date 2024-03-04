@@ -8,7 +8,6 @@
   <ul>
     <li><a href="{% url 'device' device.id %}">Device url</a></li>
     <li>Price: {{ device.price }}</li>
-    <li><img src="{{ device.image }}" alt="device image"></li>
     <li><p>Device image: <img src="{{ device.image }}" alt="device image"></p></li>
   </ul>
   {% endfor %}

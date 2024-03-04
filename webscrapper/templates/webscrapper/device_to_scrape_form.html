@@ -1,0 +1,12 @@
+{% extends 'main.html %}
+
+{% block content %}
+  <h1>Scrape a device</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="next" value="{% url 'home' %}">
+    <button type="submit">Scrape</button>
+  </form>
+{% endblock content %}
+```
