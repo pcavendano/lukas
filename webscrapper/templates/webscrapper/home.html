@@ -2,8 +2,15 @@
 
 {% block content %}
   <h1>Helllloooooo! dans home</h1>
-  <form action="/scrapper" method="post">
-    <input type="text" name="url" placeholder="Enter URL">
-    <input type="submit" value="Scrap">
-  </form>
+  smartphones_data
+  {% for device in smartphones_data %}
+  <h1>Device name: {{ device.name }}</h1>
+  <ul>
+    <li><a href="{% url 'device' device.id %}">Device url</a></li>
+    <li>Price: {{ device.price }}</li>
+    <li><img src="{{ device.image }}" alt="device image"></li>
+    <li><p>Device image: <img src="{{ device.image }}" alt="device image"></p></li>
+  </ul>
+  {% endfor %}
+
 {% endblock content %}
