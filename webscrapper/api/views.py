@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Device
+from .models import getDevice
 from .serializers import DeviceSerializer
 
 @api_view(['GET'])
@@ -41,6 +41,6 @@ def getRoutes(request):
 
 @api_view(['GET'])
 def getDevices(request):
-    devices = Device.objects.all()
+    devices = getDevice.objects.all()
     serializer = DeviceSerializer(devices, many=True)
     return Response(serializer.data)
