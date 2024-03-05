@@ -69,9 +69,9 @@ Open up your Ubuntu terminal, cd into the directory that you use to store all yo
 
 cd ~/web
 
-Then create a new directory for your project. I'm going to call mine "lukasScrapper":
+Then create a new directory for your project. I'm going to call mine "core":
 
-mkdir lukasScrapper && cd basic_django
+mkdir core && cd webscrapper
 
 THen
 
@@ -118,7 +118,7 @@ poetry add Django
 poetry run django-admin.py startproject basic_django .
 '''
 
-Note: in Ubuntu, i runned the comand poetry run django-admin startproject lukasScrapper . insteadf of poetry run django-admin.py startproject basic_django .
+Note: in Ubuntu, i runned the comand poetry run django-admin startproject core . insteadf of poetry run django-admin.py startproject basic_django .
 
 This will create a new Django project in your current directory. You can now run the test server by running the following command:
 
