@@ -1,7 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import getDevice
+from webscrapper.models import Smarthphone
+from webscrapper.models import Device
+from .serializers import SmarthphoneSerializer
 from .serializers import DeviceSerializer
+
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -41,6 +44,18 @@ def getRoutes(request):
 
 @api_view(['GET'])
 def getDevices(request):
-    devices = getDevice.objects.all()
+    devices = Device.objects.all()
     serializer = DeviceSerializer(devices, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getSmarthphone(srequest):
+    smarthphones = Smarthphone.objects.all()
+    serializer = SmarthphoneSerializer(smarthphones, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getSmarthphone(request, pk):
+    smarthphone = Smarthphone.objects.get(id=pk)
+    serializer = SmarthphoneSerializer(smarthphone, many=False)
     return Response(serializer.data)

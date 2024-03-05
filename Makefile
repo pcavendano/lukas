@@ -3,11 +3,15 @@ rs:
 	poetry run python -m core.manage runserver
 
 .PHONY: mmigrations
-mmimgrations:
+mimgrations:
 	poetry run python -m core.manage makemigrations
 
+.PHONY: show
+mimgrations:
+	poetry run python -m core.manage showmigrations
+
 .PHONY:migrate
-mmigrate:
+migrate:
 	poetry run python -m core.manage migrate
 
 .PHONY:superuser

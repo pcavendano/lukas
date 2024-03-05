@@ -15,6 +15,7 @@ class Device(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     price = models.FloatField()
+    memory = models.IntegerField()
     image = models.CharField(max_length=500)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -39,3 +40,9 @@ class DevicePrices(models.Model):
 
     def __str__(self):
         return self.device.name
+    
+class Smarthphone(models.Model):
+    names = models.CharField(max_length=100)
+    prix = models.FloatField()
+    def __str__(self):
+        return self.name

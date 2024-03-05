@@ -1,10 +1,16 @@
-from rest_framework import serializers
-from .models import getDevice
+from rest_framework.serializers import ModelSerializer
+from webscrapper.models import Smarthphone
+from webscrapper.models import Device
 
 
 
 
-class DeviceSerializer(serializers.ModelSerializer):
+class SmarthphoneSerializer(ModelSerializer):
     class Meta:
-        model = getDevice
+        model = Smarthphone
+        fields = '__all__'
+
+class DeviceSerializer(ModelSerializer):
+    class Meta:
+        model = Device
         fields = '__all__'
