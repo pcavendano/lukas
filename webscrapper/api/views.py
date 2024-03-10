@@ -10,13 +10,19 @@ from .serializers import DeviceSerializer
 def getRoutes(request):
     routes = [
         {
+            'Endpoint': '/api',
+            'method': 'GET',
+            'body': None,
+            'description': 'Returns this page'
+        },
+        {
             'Endpoint': '/api/devices',
             'method': 'GET',
             'body': None,
             'description': 'Returns an array of devices'
         },
         {
-            'Endpoint': '/api/devices/<int:id>',
+            'Endpoint': '/api/devices/:id',
             'method': 'GET',
             'body': None,
             'description': 'Returns a single device object by ID'
@@ -46,6 +52,12 @@ def getRoutes(request):
 def getDevices(request):
     devices = Device.objects.all()
     serializer = DeviceSerializer(devices, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getDevice(request, pk):
+    device = Device.objects.get(id=pk)
+    serializer = DeviceSerializer(device, many=False)
     return Response(serializer.data)
 
 @api_view(['GET'])
