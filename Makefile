@@ -1,13 +1,13 @@
-.PHONY:install
+.PHONY:rs
 rs:
 	poetry run python -m core.manage runserver
 
-.PHONY: mmigrations
-mimgrations:
+.PHONY: migrations
+migrations:
 	poetry run python -m core.manage makemigrations
 
 .PHONY: show
-mimgrations:
+showmigrations:
 	poetry run python -m core.manage showmigrations
 
 .PHONY:migrate
