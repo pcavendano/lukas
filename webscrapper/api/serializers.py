@@ -1,16 +1,14 @@
 from rest_framework.serializers import ModelSerializer
-from webscrapper.models import Smarthphone
-from webscrapper.models import Device
+from webscrapper.models import Model, Manufacturer
 
-
-
-
-class SmarthphoneSerializer(ModelSerializer):
+class ManufacturerSerializer(ModelSerializer):
     class Meta:
-        model = Smarthphone
+        model = Manufacturer
         fields = '__all__'
 
-class DeviceSerializer(ModelSerializer):
+class ModelsSerializer(ModelSerializer):
+    manufacturer = ManufacturerSerializer()  # Include the nested manufacturer field
     class Meta:
-        model = Device
+        model = Model
         fields = '__all__'
+

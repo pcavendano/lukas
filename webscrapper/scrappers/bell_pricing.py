@@ -63,4 +63,4 @@ def scrape_and_save(url):
 # Exemple d'utilisation
 if __name__ == "__main__":
     # Remplacez 'example.com/api/data' par l'URL qui renvoie du JSON
-    scrape_and_save("https://ws1-bell.sbeglobalcare.com/gc-ws-connect-1.9/rest/gcWsConnect/findCatalogModels?session_id=8a331dc7-2cca-4cbe-8458-f04e48927e3c&category_code=TRADEIN&manufacturer_code=AP&cache=true")
+    scrape_and_save("https://ws1-bell.sbeglobalcare.com/gc-ws-connect-1.9/rest/gcWsConnect/getBuyBackProductsEstimate?session_id=893351c7-d359-4462-a9fd-1ea5cce4343c&buyer_code=REDEEM&product_code=TI9443")

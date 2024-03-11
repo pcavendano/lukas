@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Device
+from .models import Model
 # Create your views here.
 
 smartphones_data = [
@@ -23,7 +23,7 @@ smartphones_data = [
 
 
 def home(requests):
-    smartphones_data = Device.objects.all()
+    smartphones_data = Model.objects.all()
     context = {'smartphones_data':smartphones_data}
     return render(requests, 'webscrapper/home.html', context)
 
@@ -31,9 +31,11 @@ def scrappe(requests):
     return render(requests, 'webscrapper/scrapper.html')
 
 def device(requests, pk):
-    device = Device.objects.get(id=pk)
+    device = Model.objects.get(id=pk)
     context = {'smartphone':device}
     return render(requests, 'webscrapper/device.html', context)
+
+
 
 def DeviceToScrappe(requests):
     context = {}
