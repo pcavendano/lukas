@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from webscrapper.models import Model
 from .serializers import ModelsSerializer
-
+from .serializers import ManufacturerSerializer
 from webscrapper.models import ModelPrice
 import requests
 from django.http import HttpResponse
@@ -91,6 +91,12 @@ def getModels(request):
 def getModel(request, pk):
     model = Model.objects.get(id=pk)
     serializer = ModelsSerializer(model, many=False)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getManufacturers(request):
+    manufacturer = Manufacturer.objects.all()
+    serializer = ManufacturerSerializer(manufacturer, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
