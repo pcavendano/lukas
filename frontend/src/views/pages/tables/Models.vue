@@ -21,20 +21,37 @@ const fetchModels = async () => {
 };
 
 const nextPage = () => {
-  if (currentPage.value < totalPages.value) {  // Corrected variable access
+  if (currentPage.value < totalPages.value) {
     currentPage.value++;
     fetchModels();
   }
 };
 
 const prevPage = () => {
-  if (currentPage.value > 1) {  // Corrected variable access
+  if (currentPage.value > 1) {
     currentPage.value--;
     fetchModels();
   }
 };
 
-fetchModels();  // Fetch models initially
+const updatePrice = async (modelCode, item) => {
+  try {
+    const response = await axios.get(`http://127.0.0.1:8000/api/scrappe/${modelCode}`);
+    item.last_price = response.data.buyback_price; // Mettre à jour directement la propriété last_price de l'élément
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const daysSince = (dateString) => {
+  // Calculer la différence en millisecondes entre la date actuelle et la date fournie
+  const diffMs = new Date() - new Date(dateString);
+  // Convertir les millisecondes en jours
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  return diffDays;
+};
+
+fetchModels();  // Récupérer les modèles initialement
 </script>
 
 <template>
@@ -51,10 +68,16 @@ fetchModels();  // Fetch models initially
           Marque
         </th>
         <th>
-          Dernier Prix
+          Dernière Mise à jour
+        </th>
+        <th>
+          PRIX DE RACHAT MAXIMUM
         </th>
         <th>
           IMAGE
+        </th>
+        <th>
+          Mettre à jour le prix
         </th>
       </tr>
     </thead>
@@ -71,10 +94,20 @@ fetchModels();  // Fetch models initially
           {{ item.manufacturer.manufacturer_name }}
         </td>
         <td class="text-center">
-          {{ item.description }}
+          Il y a {{ daysSince(item.updated) }} jours
+        </td>
+        <td class="text-center" style="color: orange;">
+          {{
+        item.last_price
+          ? "$" + item.last_price
+          : "N/A"
+      }}
         </td>
         <td class="text-center">
           <img :src="`${item.image}`" :alt="item.name" width="50" height="50">
+        </td>
+        <td class="text-center">
+          <VBtn color="primary" @click="updatePrice(item.model_code, item)">Mettre à jour</VBtn>
         </td>
       </tr>
     </tbody>
