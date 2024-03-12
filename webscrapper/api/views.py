@@ -13,6 +13,10 @@ from webscrapper.models import Manufacturer
 from webscrapper.models import CategoryItem
 from webscrapper.models import Model
 from django.db.models import OuterRef, Subquery
+from django.http import JsonResponse
+import re
+import requests
+from bs4 import BeautifulSoup
 
 
 
@@ -76,7 +80,6 @@ def getModels(request):
     paginator = Paginator(models, 10)  # Show 10 models per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
     serializer = ModelsSerializer(page_obj, many=True)  # Serialize the paginated queryset
     
     data = serializer.data  # Use serialized data instead of manually converting QuerySet to list of dictionaries
@@ -97,7 +100,6 @@ def scrappe(request):
         # Envoyer une requête GET à l'URL
         response = requests.get(url)
         # Vérifier si la requête a réussi (code de statut 200)
-        print(response)
         if response.status_code == 200:
             # Convertir le contenu de la réponse en JSON
             json_data = response.json()
@@ -120,6 +122,14 @@ def scrappe(request):
                 )
 
                 model_name_without_manufacturer = model_data['model_name'].replace(manufacturer.manufacturer_name, '').strip()
+                model_name_without_memorygb = re.sub(r'\d+GB', '', model_name_without_manufacturer).strip()                
+                # Replace spaces with hyphens
+                model_name_without_memorygb = model_name_without_memorygb.replace(' ', '-')
+                # Convert to lowercase
+                model_name_without_memorygb = model_name_without_memorygb.lower()
+                img = getImagesFromUrlWithBeutifulSoup(manufacturer.manufacturer_name.lower(), model_name_without_memorygb)
+                print("Image URL: ")
+                print(img)
                 # Enregistrer le modèle uniquement si le mode_id n'existe pas
                 existing_model = Model.objects.filter(model_id=model_data['model_id']).first()
                 if existing_model:
@@ -132,7 +142,9 @@ def scrappe(request):
                         model_code=model_data['model_code'],
                         model_name=model_name_without_manufacturer,
                         model_title=model_data['model_title'],
-                        category_item=category_item
+                        category_item=category_item,
+                        image=img
+                        
                     )
                     print(f"Le modèle avec l'ID {model_data['model_id']} a été créé avec succès.")
 
@@ -151,29 +163,35 @@ def scrappe(request):
 def getPrice(request, pk):
     # Assuming `pk` is the product code needed for scraping
     scrape_url = "https://ws1-bell.sbeglobalcare.com/gc-ws-connect-1.9/rest/gcWsConnect/getBuyBackProductsEstimate?session_id=893351c7-d359-4462-a9fd-1ea5cce4343c&buyer_code=REDEEM&product_code=" + pk
+    buyback_price = ModelPrice.scrape_and_save(scrape_url, pk)
+    print(f'Buyback price for product code {pk}: {buyback_price}')
+    
+    return JsonResponse({'buyback_price': buyback_price})
 
-    # Scrape and save data
-    ModelPrice.scrape_and_save(scrape_url, pk)
-
-    # Fetch model price
-    #model = ModelPrice.objects.get(model=pk)
+def getImagesFromUrlWithBeutifulSoup(manufacturer, url):
+    imageUrl = 'https://www.gizmochina.com/product/' + manufacturer+"-" + url
+    headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36'
+    }
+    response = requests.get(imageUrl, headers=headers)
+    if response.status_code == 200:
+        html_content = response.content
+        soup = BeautifulSoup(html_content, 'html.parser')
+        # Find the img tag
+        img_tag = soup.find('img', class_='aps-image-zoom')
+        if img_tag:
+            # Extract the src attribute
+            src = img_tag.get('src')
+            if src:
+                print(src)
+            else:
+                print("Image src attribute not found.")
+        else:
+            print("Image not found on the page.")
+    else:
+        print(f"An error occurred: {response.status_code}")
+        print(f"An error occurred: {imageUrl}")
+        return "https://www.gizmochina.com/wp-content/uploads/2024/03/1-500x500.jpg"
+    if src:
+        return src
     
-    # Serialize model price
-    #serializer = ModelsSerializer(model, many=False)
-    
-    # Return serialized data
-    
-    #return Response(serializer.data)
-    
-    return Response("Prix mis à jour avec succès.")
-    # script_path = 'webscrapper/scrappers/bell_pricing.py'
-    # # Ajoutez toute logique supplémentaire pour votre fonction de vue
-    # try:
-    #     # Call the script with the product code as an argument
-    #     result = subprocess.run(['python', script_path, pk], capture_output=True, text=True, timeout=30)
-    #     # You can return the output or handle it as needed
-    #     return HttpResponse({'result': result.stdout})
-    # except subprocess.TimeoutExpired:
-    #     return HttpResponse({'error': 'Script execution timed out.'})
-    # except Exception as e:
-    #     return HttpResponse({'error': f'Script execution failed: {e}'})
