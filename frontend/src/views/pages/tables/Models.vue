@@ -1,10 +1,13 @@
 <script setup>
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+
 
 const models = ref([]);
 const currentPage = ref(1);
 const totalPages = ref(1);
+const selectedManufacturer = ref(null); // Define selectedManufacturer here
+const manufacturers = ref([]); // Define manufacturers array
 
 const fetchModels = async () => {
   try {
@@ -51,10 +54,32 @@ const daysSince = (dateString) => {
   return diffDays;
 };
 
+const fetchManufacturers = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/api/manufacturers/');
+    manufacturers.value = response.data; // Assuming the response data is an array of manufacturers
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+fetchManufacturers(); // Fetch manufacturers data
+
+
 fetchModels();  // Récupérer les modèles initialement
+
+const filteredModels = computed(() => {
+  if (!selectedManufacturer.value) {
+    return models.value;
+  }
+  return models.value.filter(model => model.manufacturer.manufacturer_code === selectedManufacturer.value);
+});
 </script>
 
 <template>
+  <VSelect v-model="selectedManufacturer" :items="manufacturers" item-title="manufacturer_name" item-value="manufacturer_code" label="Filter by Marque">
+    <template #prepend-inner></template>
+  </VSelect>
   <VTable height="auto" fixed-header>
     <thead>
       <tr>
@@ -83,7 +108,7 @@ fetchModels();  // Récupérer les modèles initialement
     </thead>
 
     <tbody>
-      <tr v-for="item in models" :key="item.model">
+      <tr v-for="item in filteredModels" :key="item.model">
         <td>
           {{ item.model_name }}
         </td>
@@ -98,10 +123,10 @@ fetchModels();  // Récupérer les modèles initialement
         </td>
         <td class="text-center" style="color: orange;">
           {{
-        item.last_price
-          ? "$" + item.last_price
-          : "N/A"
-      }}
+    item.last_price
+      ? "$" + item.last_price
+      : "N/A"
+  }}
         </td>
         <td class="text-center">
           <img :src="`${item.image}`" :alt="item.name" width="50" height="50">
