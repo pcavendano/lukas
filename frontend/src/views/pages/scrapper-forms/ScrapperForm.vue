@@ -6,7 +6,7 @@
           <VCol cols="12" md="9">
             <!-- Dropdown input for selecting models -->
             <VSelect v-model="selectedModel" :items="models" item-title="model_name" item-value="model_name"
-              label="Select a Model">
+              label="Sélectionnez un modèle">
               <template #prepend-inner></template>
             </VSelect>
           </VCol>
@@ -17,10 +17,10 @@
         <VRow no-gutters>
           <!-- Display details of the selected model -->
           <div v-if="selectedModelDetails">
-            <h2>Details of the selected model</h2>
-            <p><strong>Name:</strong> {{ selectedModelDetails.model_name }}</p>
+            <h2>Détails du modèle sélectionné</h2>
+            <p><strong>Nom:</strong> {{ selectedModelDetails.model_name }}</p>
             <p><strong>Code:</strong> {{ selectedModelDetails.model_code }}</p>
-            <p><strong>Manufacturer:</strong> {{ selectedModelDetails.manufacturer.manufacturer_name }}</p>
+            <p><strong>Fabricant:</strong> {{ selectedModelDetails.manufacturer.manufacturer_name }}</p>
             <img :src="selectedModelDetails.image" :alt="selectedModelDetails.model_name" width="50" height="50">
           </div>
         </VRow>
@@ -29,22 +29,22 @@
       <VCol cols="12">
         <VRow no-gutters>
           <VCol cols="12" md="9">
-            <VTextField prepend-inner-icon="bxs-invader" label="Website" placeholder="www.bell.ca" />
+            <VTextField prepend-inner-icon="bxs-invader" label="Site Web" placeholder="www.bell.ca" />
           </VCol>
         </VRow>
       </VCol>
 
       <!-- Submit and reset button -->
       <VCol offset-md="3" cols="12" md="9" class="d-flex gap-4">
-        <VBtn color="secondary" variant="tonal" type="reset">Reset</VBtn>
-        <VBtn type="submit">Submit</VBtn>
+        <VBtn color="secondary" variant="tonal" type="reset" @click="resetForm">Réinitialiser</VBtn>
+        <VBtn type="submit">Soumettre</VBtn>
       </VCol>
 
       <VCol cols="12">
         <VRow no-gutters>
           <!-- Display success message -->
           <div v-if="success">
-            <h2>{{ success }}</h2>
+          <h2 style="color: green;">{{ success }}</h2>
           </div>
         </VRow>
       </VCol>
@@ -95,5 +95,10 @@ const submitForm = () => {
         console.error(error);
       });
   }
+};
+
+// Function to reset the form
+const resetForm = () => {
+  success.value = null;
 };
 </script>

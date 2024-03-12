@@ -1,15 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import User
+import requests
+
 
 # Create your models here.
 # This is where we configure our database schema
-class websitesToScrappe(models.Model):
+class WebsitesToScrappe(models.Model):
     url = models.CharField(max_length=500)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.url
     
 # Nouveaux mpdels basés la response de l'API
     # Manufacturer
@@ -37,11 +35,40 @@ class Model(models.Model):
     image = models.CharField(max_length=500,default='https://www.gizmochina.com/wp-content/uploads/2020/12/1-14-300x300.jpg')
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+    
 
-class ModelPrices(models.Model):
+class ModelPrice(models.Model):
     model = models.ForeignKey(Model, on_delete=models.CASCADE, related_name='prices')
+    id = models.AutoField(primary_key=True)
+    model_code = models.CharField(max_length=20, default='')
     price = models.FloatField()
     created = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        ordering = ['-created']  # Orders by date added, newest first
 
-    def __str__(self):
-        return self.model.name
+    
+    @staticmethod
+    def scrape_and_save(url, pk):
+        try:
+            response = requests.get(url)
+            if response.status_code == 200:
+                json_data = response.json()
+                model_code = json_data["products"][0]["product_code"]
+                buyback_value = json_data["products"][0]["buyback_value_max"]
+                print(model_code)
+                print('aca')
+                existing_model = Model.objects.filter(model_code=model_code).first()
+                print(existing_model)
+                model = ModelPrice.objects.create(
+                    model_code=model_code,
+                    model=existing_model,
+                    price=buyback_value
+                )
+                print(f"Le modèle avec l'ID {model} a été créé avec succès.")
+
+            else:
+                print(f"Failed to fetch URL: {url}. Status Code: {response.status_code}")
+                return {"error": f"Failed to fetch URL: {url}. Status Code: {response.status_code}"}
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return {"error": f"An error occurred: {e}"}
