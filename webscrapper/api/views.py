@@ -12,7 +12,26 @@ from django.http import JsonResponse
 from webscrapper.models import Manufacturer
 from webscrapper.models import CategoryItem
 from webscrapper.models import Model
+from django.db.models import OuterRef, Subquery
 
+
+
+
+@api_view(['GET'])
+def getDevices(request):
+    def get_devices_with_last_price():
+        latest_price_subquery = ModelPrice.objects.filter(
+            model=OuterRef('pk')
+        ).order_by('-created').values('price')[:1]
+
+        devices_with_last_price = Model.objects.annotate(
+            last_price=Subquery(latest_price_subquery)
+        )
+        return devices_with_last_price
+
+    devices_with_last_price = get_devices_with_last_price()
+    serializer = ModelsSerializer(devices_with_last_price, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
