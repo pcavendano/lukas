@@ -141,7 +141,7 @@ def scrappe(request):
                         model_id=model_data['model_id'],
                         model_code=model_data['model_code'],
                         model_name=model_name_without_manufacturer,
-                        model_title=model_data['model_title'],
+                        model_title=model_name_without_memorygb,
                         category_item=category_item,
                         image=img
                         
@@ -194,4 +194,58 @@ def getImagesFromUrlWithBeutifulSoup(manufacturer, url):
         return "https://www.gizmochina.com/wp-content/uploads/2024/03/1-500x500.jpg"
     if src:
         return src
-    
+
+@api_view(['GET'])
+def updateManufacturers(request):
+    urlManufacturers = "https://ws1-bell.sbeglobalcare.com/gc-ws-connect-1.9/rest/gcWsConnect/getManufacturers?session_id=1b254d76-565d-416e-b36a-9551d1e3b9f1&view_parameters=TRADEIN"
+
+    try:
+        # Envoyer une requête GET à l'URL
+        response = requests.get(urlManufacturers)
+        # Vérifier si la requête a réussi (code de statut 200)
+        if response.status_code == 200:
+            # Convertir le contenu de la réponse en JSON
+            json_data = response.json()
+            for model_data in json_data['manufacturers']:
+                if model_data is not None and 'parameters' in model_data and model_data['parameters'] is not None:
+                    if len(model_data['parameters']) > 0 and 'param_value' in model_data['parameters'][0]:
+                        active = model_data['parameters'][0]['param_value']
+                        if active == "1":
+                            # Your code here
+                            manufacturer_id = model_data['manufacturer_id']
+                            # Enregistrer le fabricant
+                            manufacturer, _ = Manufacturer.objects.get_or_create(
+                                manufacturer_id=model_data['manufacturer_id'],
+                                manufacturer_code=model_data['manufacturer_code'],
+                                manufacturer_name=model_data['manufacturer_name']
+                            )
+                            print(f"Le modèle avec l'ID {model_data['manufacturer_id']} a été créé avec succès.")
+
+                            # Enregistrer le modèle uniquement si le mode_id n'existe pas
+                            existing_model = Manufacturer.objects.filter(manufacturer_id=model_data['manufacturer_id']).first()
+                            if existing_model:
+                                print(f"Le manufacturer avec l'ID {model_data['manufacturer_id']} existe déjà.")
+                            else:
+                                # Enregistrer le modèle
+                                Manufacturer.objects.create(
+                                    manufacturer_id=model_data['manufacturer_id'],
+                                    manufacturer_code=model_data['manufacturer_code'],
+                                    manufacturer_name=model_data['manufacturer_name'],
+                                )
+                                print(f"Le modèle avec l'ID {model_data['model_id']} a été créé avec succès.")
+                        else:
+                            print(f"Le manufacturer {model_data['manufacturer_name']} est désactivé.")
+                    else:
+                        print("No 'param_value' found in the first parameter.")
+                else:
+                    print("model_data or model_data['parameters'] is None.")
+        else:
+            print(f"Échec de la récupération de l'URL : {url}. Code de statut : {response.status_code}")
+            return {"error": f"Échec de la récupération de l'URL : {url}. Code de statut : {response.status_code}"}
+    except Exception as e:
+        print(f"Une erreur s'est produite : {e}")
+        return {"error": f"Une erreur s'est produite : {e}"}
+    #script_path = 'webscrapper/scrappers/bell_scrapper.py'
+    #subprocess.run(['python', script_path])
+    print("Script de scrapping exécuté avec succès!")
+    return HttpResponse("Script de scrapping exécuté avec succès.")
