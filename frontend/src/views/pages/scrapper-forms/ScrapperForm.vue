@@ -5,6 +5,28 @@
         <VRow no-gutters>
           <VCol cols="12" md="9">
             <!-- Dropdown input for selecting models -->
+            <VSelect v-model="selectedManufacturer" :items="manufacturers" item-title="manufacturer_name" item-value="manufacturer_code"
+              label="Sélectionnez un Manufacturer">
+              <template #prepend-inner></template>
+            </VSelect>
+          </VCol>
+        </VRow>
+      </VCol>
+      <VCol cols="12">
+        <VRow no-gutters>
+          <!-- Display details of the selected model -->
+          <div v-if="selectedManufacturerDetails">
+            <h2>Détails du manufacturer sélectionné</h2>
+            <p><strong>Nom:</strong> {{ selectedManufacturerDetails.manufacturer_name }}</p>
+            <p><strong>Code:</strong> {{ selectedManufacturerDetails.manufacturer_code }}</p>
+          </div>
+        </VRow>
+      </VCol>
+
+      <VCol cols="12">
+        <VRow no-gutters>
+          <VCol cols="12" md="9">
+            <!-- Dropdown input for selecting models -->
             <VSelect v-model="selectedModel" :items="models" item-title="model_name" item-value="model_name"
               label="Sélectionnez un modèle">
               <template #prepend-inner></template>
@@ -57,14 +79,27 @@ import axios from 'axios';
 import { ref, watch } from 'vue';
 
 const models = ref([]);
+const manufacturers = ref([]);
 const selectedModel = ref(null);
 const selectedModelDetails = ref(null);
+const selectedManufacturer = ref(null);
+const selectedManufacturerDetails = ref(null);
 const success = ref(null);
 
 // Fetch models data from the Django REST API
 axios.get('http://127.0.0.1:8000/api/devices/')
   .then(response => {
     models.value = response.data;
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+// Fetch manufacturers data from the Django REST API
+axios.get('http://127.0.0.1:8000/api/manufacturers/')
+  .then(response => {
+    console.log(response.data);
+    manufacturers.value = response.data;
   })
   .catch(error => {
     console.error(error);
@@ -82,6 +117,18 @@ watch(selectedModel, (newValue, oldValue) => {
   }
 });
 
+// Watch for changes in selectedManufacturer and update selectedManufacturerDetails accordingly
+watch(selectedManufacturer, (newValue, oldValue) => {
+  if (newValue) {
+    const modelDetails = manufacturers.value.find(manufacturer => manufacturer.manufacturer_code === newValue);
+    if (modelDetails) {
+      selectedManufacturerDetails.value = modelDetails;
+    }
+  } else {
+    selectedManufacturerDetails.value = null;
+  }
+});
+
 // Function to handle form submission
 const submitForm = () => {
   if (selectedModelDetails.value) {
@@ -90,6 +137,20 @@ const submitForm = () => {
       .then(response => {
         console.log(response.data);
         success.value = "Succès ! Le prix de rachat maximum est de $" + response.data.buyback_price;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+};
+
+const updateManufacturers = () => {
+  if (selectedModelDetails.value) {
+    const url = `http://127.0.0.1:8000/api/updateManufacturers/`;
+    axios.get(url)
+      .then(response => {
+        console.log(response.data);
+        success.value = "Succès ! Manufacturers:" + response.data;
       })
       .catch(error => {
         console.error(error);
