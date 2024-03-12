@@ -62,7 +62,7 @@ const selectedModelDetails = ref(null);
 const success = ref(null);
 
 // Fetch models data from the Django REST API
-axios.get('http://127.0.0.1:8000/api/models/')
+axios.get('http://127.0.0.1:8000/api/devices/')
   .then(response => {
     models.value = response.data;
   })
@@ -89,7 +89,7 @@ const submitForm = () => {
     axios.get(url)
       .then(response => {
         console.log(response.data);
-        success.value = response.data;
+        success.value = "Succès ! Le prix de rachat maximum est de $" + response.data.buyback_price;
       })
       .catch(error => {
         console.error(error);
