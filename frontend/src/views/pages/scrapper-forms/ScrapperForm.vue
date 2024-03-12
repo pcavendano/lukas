@@ -79,8 +79,8 @@ import axios from 'axios';
 import { ref, watch } from 'vue';
 
 const models = ref([]);
-const manufacturers = ref([]);
 const selectedModel = ref(null);
+const manufacturers = ref([]);
 const selectedModelDetails = ref(null);
 const selectedManufacturer = ref(null);
 const selectedManufacturerDetails = ref(null);
@@ -135,13 +135,22 @@ const submitForm = () => {
     const url = `http://127.0.0.1:8000/api/scrappe/${selectedModelDetails.value.model_code}`;
     axios.get(url)
       .then(response => {
-        console.log(response.data);
         success.value = "Succès ! Le prix de rachat maximum est de $" + response.data.buyback_price;
       })
       .catch(error => {
         console.error(error);
       });
   }
+  if (selectedManufacturerDetails.value) {
+    const url = `http://127.0.0.1:8000/api/scrappe/manufacturers/${selectedManufacturerDetails.value.manufacturer_code}`;
+    axios.get(url)
+      .then(response => {
+        success.value = "Succès! Mise à jour des téléphones " + selectedManufacturerDetails.value.manufacturer_name + response.data;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+};
 };
 
 const updateManufacturers = () => {
