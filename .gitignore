@@ -69,6 +69,7 @@ venv/
 # Misc
 .mypy_cache
 /staticfiles
+/sneat-1.0.0
 
 # IDEs
 .DS_Store

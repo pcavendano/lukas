@@ -1,66 +1,43 @@
 import os
 import django
 import requests
-import json
-from webscrapper.models import Manufacturer
+import sys
 from webscrapper.models import Model
-from webscrapper.models import CategoryItem
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 django.setup()
 
 def scrape_and_save(url):
-    # Fonction pour extraire les données d'un site web et renvoyer la réponse JSON
+    print("aqui")
+    print(url)
     try:
-        # Envoyer une requête GET à l'URL
         response = requests.get(url)
-        # Vérifier si la requête a réussi (code de statut 200)
+        print(response)
         if response.status_code == 200:
-            # Convertir le contenu de la réponse en JSON
             json_data = response.json()
-            for model_data in json_data['models']:
-                manufacturer_data = model_data['manufacturer']
-                category_item_data = model_data['category_item']
+            print(json_data)
+            buyback_value = json_data["products"][0]["buyback_values"][0]["value"]
+            model_code = json_data["products"][0]["product_code"]
 
-                # Enregistrer le fabricant
-                manufacturer, _ = Manufacturer.objects.get_or_create(
-                    manufacturer_id=manufacturer_data['manufacturer_id'],
-                    manufacturer_code=manufacturer_data['manufacturer_code'],
-                    manufacturer_name=manufacturer_data['manufacturer_name']
-                )
-
-                # Enregistrer l'élément de catégorie
-                category_item, _ = CategoryItem.objects.get_or_create(
-                    item_id=category_item_data['item_id'],
-                    item_order=category_item_data['item_order'],
-                    item_name=category_item_data['item_name']
-                )
-
-                model_name_without_manufacturer = model_data['model_name'].replace(manufacturer.manufacturer_name, '').strip()
-                # Enregistrer le modèle uniquement si le mode_id n'existe pas
-                existing_model = Model.objects.filter(model_id=model_data['model_id']).first()
-                if existing_model:
-                    print(f"Le modèle avec l'ID {model_data['model_id']} existe déjà.")
-                else:
-                    # Enregistrer le modèle
-                    model = Model.objects.create(
-                        manufacturer=manufacturer,
-                        model_id=model_data['model_id'],
-                        model_code=model_data['model_code'],
-                        model_name=model_name_without_manufacturer,
-                        model_title=model_data['model_title'],
-                        category_item=category_item
-                    )
-                    print(f"Le modèle avec l'ID {model_data['model_id']} a été créé avec succès.")
+            existing_model = Model.objects.filter(model_code=model_code).first()
+            if existing_model:
+                # Update the existing model with the new buyback value
+                existing_model.buyback_value_max = buyback_value
+                existing_model.save()
+                print(f"Model with ID {model_code} updated successfully with buyback value: {buyback_value}")
+            else:
+                print(f"Model with ID {model_code} does not exist.")
 
         else:
-            print(f"Échec de la récupération de l'URL : {url}. Code de statut : {response.status_code}")
-            return {"error": f"Échec de la récupération de l'URL : {url}. Code de statut : {response.status_code}"}
+            print(f"Failed to fetch URL: {url}. Status Code: {response.status_code}")
+            return {"error": f"Failed to fetch URL: {url}. Status Code: {response.status_code}"}
     except Exception as e:
-        print(f"Une erreur s'est produite : {e}")
-        return {"error": f"Une erreur s'est produite : {e}"}
+        print(f"An error occurred: {e}")
+        return {"error": f"An error occurred: {e}"}
 
-# Exemple d'utilisation
+# Example usage
 if __name__ == "__main__":
-    # Remplacez 'example.com/api/data' par l'URL qui renvoie du JSON
-    scrape_and_save("https://ws1-bell.sbeglobalcare.com/gc-ws-connect-1.9/rest/gcWsConnect/getBuyBackProductsEstimate?session_id=893351c7-d359-4462-a9fd-1ea5cce4343c&buyer_code=REDEEM&product_code=TI9443")
+    pk = "TI9443"
+    # Replace 'example.com/api/data' with the URL that returns JSON
+    scrape_and_save("https://ws1-bell.sbeglobalcare.com/gc-ws-connect-1.9/rest/gcWsConnect/getBuyBackProductsEstimate?session_id=893351c7-d359-4462-a9fd-1ea5cce4343c&buyer_code=REDEEM&product_code="+ pk)

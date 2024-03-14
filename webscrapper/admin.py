@@ -1,9 +1,10 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import websitesToScrappe, ModelPrices, Manufacturer, CategoryItem, Model
-admin.site.register(websitesToScrappe)
-admin.site.register(ModelPrices)
+from .models import WebsitesToScrappe, ModelPrice, Manufacturer, CategoryItem, Model, RepairPrices
+admin.site.register(WebsitesToScrappe)
+admin.site.register(ModelPrice)
+admin.site.register(RepairPrices)
 # Nouveaux mpdels basés la response de l'API
     # Manufacturer
     # CategoryItem

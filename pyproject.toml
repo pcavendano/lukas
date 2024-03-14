@@ -12,6 +12,7 @@ requests = "^2.31.0"
 djangorestframework = "^3.14.0"
 django-cors-headers = "^4.3.1"
 beautifulsoup4 = "^4.12.3"
+requests-html = "^0.10.0"
 
 
 [build-system]

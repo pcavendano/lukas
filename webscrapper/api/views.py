@@ -4,6 +4,8 @@ from webscrapper.models import Model
 from .serializers import ModelsSerializer
 from .serializers import ManufacturerSerializer
 from webscrapper.models import ModelPrice
+from webscrapper.models import RepairPrices  # Add this import
+
 import requests
 from django.http import HttpResponse
 from django.core.paginator import Paginator
@@ -14,8 +16,8 @@ from webscrapper.models import CategoryItem
 from webscrapper.models import Model
 from django.db.models import OuterRef, Subquery
 from django.http import JsonResponse
+from requests_html import HTMLSession
 import re
-import requests
 from bs4 import BeautifulSoup
 
 
@@ -86,10 +88,9 @@ def getModels(request):
     
     return JsonResponse({'data': data, 'page': page_obj.number, 'total_pages': paginator.num_pages})
 
-
 @api_view(['GET'])
 def getModel(request, pk):
-    model = Model.objects.get(id=pk)
+    model = Model.objects.get(model_id=int(pk))
     serializer = ModelsSerializer(model, many=False)
     return Response(serializer.data)
 
@@ -269,11 +270,14 @@ def getImagesFromUrlWithBeutifulSoup(manufacturer, url):
 
 @api_view(['GET'])
 def updateManufacturers(request):
-    urlManufacturers = "https://ws1-bell.sbeglobalcare.com/gc-ws-connect-1.9/rest/gcWsConnect/getManufacturers?session_id=1b254d76-565d-416e-b36a-9551d1e3b9f1&view_parameters=TRADEIN"
-
+    # Create an HTMLSession object
+    session = HTMLSession()
+    # # Make a GET request to a URL
+    response = session.get( "https://ws1-bell.sbeglobalcare.com/gc-ws-connect-1.9/rest/gcWsConnect/getManufacturers?session_id=1b254d76-565d-416e-b36a-9551d1e3b9f1&view_parameters=TRADEIN")
     try:
         # Envoyer une requête GET à l'URL
-        response = requests.get(urlManufacturers)
+        response = session.get( "https://ws1-bell.sbeglobalcare.com/gc-ws-connect-1.9/rest/gcWsConnect/getManufacturers?session_id=1b254d76-565d-416e-b36a-9551d1e3b9f1&view_parameters=TRADEIN")
+
         # Vérifier si la requête a réussi (code de statut 200)
         if response.status_code == 200:
             # Convertir le contenu de la réponse en JSON
@@ -321,3 +325,95 @@ def updateManufacturers(request):
     #subprocess.run(['python', script_path])
     print("Script de scrapping exécuté avec succès!")
     return HttpResponse("Script de scrapping exécuté avec succès.")
+
+@api_view(['GET'])
+def getIphoneRepairPrices(request):
+    repairUrl = "https://mobileklinik.ca/repair-pricing-breakdown/#apple"
+    headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36'
+    }
+    
+    response = requests.get(repairUrl, headers=headers)
+    try:
+            if response.status_code == 200:
+                soup = BeautifulSoup(response.content, 'html.parser')
+                table = soup.find('table', class_='table table-striped repair-price-table apple')
+                rows = table.find_all('tr')
+                for row in rows[2:]:  # Skip header row
+                    print("Row: ")
+                    print(row)
+                    cols = row.find_all('td')
+                    print("Cols: ")
+                    print(cols)
+                    device_name = cols[0].text.strip("<sup class='smaller-sup'>†</sup>")
+                    print("device_name")
+                    print(device_name)
+                    screen_repair_price_mk = re.sub(r'<[^>]+>', '', cols[1].text.strip()).replace('$', '')
+                    # remove everything after the space even the space
+                    screen_repair_price_mk = re.sub(r'\s.*', '', screen_repair_price_mk)
+                    
+                    if screen_repair_price_mk == "–":
+                        screen_repair_price_mk = 0
+                    print("screen_repair_price_mk")
+                    print(screen_repair_price_mk)
+                    
+                    screen_repair_price_apple = re.sub(r'<[^>]+>', '', cols[2].text.strip()).replace('$', '')
+                    #remove everything after the space even the space
+                    screen_repair_price_apple = re.sub(r'\s.*', '', screen_repair_price_apple)
+                    if screen_repair_price_apple == "–":
+                        screen_repair_price_apple = 0
+                    print("screen_repair_price_apple")
+                    print(screen_repair_price_apple)
+                    
+                    battery_repair_price_mk = re.sub(r'<[^>]+>', '', cols[3].text.strip()).replace('$', '')
+                    #remove everything after the space even the space
+                    battery_repair_price_mk = re.sub(r'\s.*', '', battery_repair_price_mk)
+                    if battery_repair_price_mk == "–":
+                        battery_repair_price_mk = 0
+                    print("battery_repair_price_mk")
+                    print(battery_repair_price_mk)
+                    
+                    battery_repair_price_apple = re.sub(r'<[^>]+>', '', cols[4].text.strip()).replace('$', '')
+                    #remove everything after the space even the space
+                    battery_repair_price_apple = re.sub(r'\s.*', '', battery_repair_price_apple)
+                    if battery_repair_price_apple == "–":
+                        battery_repair_price_apple = 0
+                    print("battery_repair_price_apple")
+                    print(battery_repair_price_apple)
+                    
+                    charge_port_repair_price_mk = re.sub(r'<[^>]+>', '', cols[5].text.strip()).replace('$', '')
+                    #remove everything after the space even the space
+                    charge_port_repair_price_mk = re.sub(r'\s.*', '', charge_port_repair_price_mk)
+                    if charge_port_repair_price_mk == "–":
+                        charge_port_repair_price_mk = 0
+                    print("charge_port_repair_price_mk")
+                    print(charge_port_repair_price_mk)
+                    name_lower_case = device_name.lower()
+                    name_lower_case = name_lower_case.replace(' ', '-')
+                    print("name_lower_case")
+                    print(name_lower_case)
+                    existing_model = Model.objects.filter(model_title = name_lower_case).first()
+                    print("existing_model")
+                    print(existing_model)
+                    if existing_model:
+                        RepairPrices.objects.create(
+                        model=existing_model,
+                        device_name=device_name,
+                        screen_repair_price_mk=float(screen_repair_price_mk),
+                        screen_repair_price_apple=float(screen_repair_price_apple),
+                        battery_repair_price_mk=float(battery_repair_price_mk),
+                        battery_repair_price_apple=float(battery_repair_price_apple),
+                        charge_port_repair_price_mk=float(charge_port_repair_price_mk)
+                        )
+                        print(f"La réparation des prix pour le modèle {device_name} a été créée avec succès.")
+                    else:
+                        print(f"Model not found for device: {device_name}")
+                return True
+            else:
+                print(f"Failed to fetch URL: {repairUrl}. Status Code: {response.status_code}")
+                return False
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return False
+        
+                

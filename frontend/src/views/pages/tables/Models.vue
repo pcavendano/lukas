@@ -77,7 +77,8 @@ const filteredModels = computed(() => {
 </script>
 
 <template>
-  <VSelect v-model="selectedManufacturer" :items="manufacturers" item-title="manufacturer_name" item-value="manufacturer_code" label="Filter by Marque">
+  <VSelect v-model="selectedManufacturer" :items="manufacturers" item-title="manufacturer_name"
+    item-value="manufacturer_code" label="Filter by Marque">
     <template #prepend-inner></template>
   </VSelect>
   <VTable height="auto" fixed-header>
@@ -110,7 +111,7 @@ const filteredModels = computed(() => {
     <tbody>
       <tr v-for="item in filteredModels" :key="item.model">
         <td>
-          {{ item.model_name }}
+          <a :href="`device/${item.model_id}`">{{ item.model_name }}</a>
         </td>
         <td class="text-center">
           {{ item.model_code }}

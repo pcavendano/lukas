@@ -55,20 +55,33 @@ class ModelPrice(models.Model):
                 json_data = response.json()
                 model_code = json_data["products"][0]["product_code"]
                 buyback_value = json_data["products"][0]["buyback_value_max"]
-                print(model_code)
-                print('aca')
                 existing_model = Model.objects.filter(model_code=model_code).first()
-                print(existing_model)
                 model = ModelPrice.objects.create(
                     model_code=model_code,
                     model=existing_model,
                     price=buyback_value
                 )
-                print(f"Le modèle avec l'ID {model} a été créé avec succès.")
-
             else:
                 print(f"Failed to fetch URL: {url}. Status Code: {response.status_code}")
                 return {"error": f"Failed to fetch URL: {url}. Status Code: {response.status_code}"}
+            return buyback_value
         except Exception as e:
             print(f"An error occurred: {e}")
             return {"error": f"An error occurred: {e}"}
+        
+class RepairPrices(models.Model):
+    model = models.ForeignKey(Model, on_delete=models.CASCADE, related_name='repair_prices')
+    id = models.AutoField(primary_key=True)
+    device_name = models.CharField(max_length=100)
+    
+    screen_repair_price_mk = models.FloatField(null=True, blank=True)  # Mobile Klinik Premium Parts
+    screen_repair_price_apple = models.FloatField(null=True, blank=True)  # Apple OEM Parts
+    battery_repair_price_mk = models.FloatField(null=True, blank=True)  # Mobile Klinik Premium Parts
+    battery_repair_price_apple = models.FloatField(null=True, blank=True)  # Apple OEM Parts
+    charge_port_repair_price_mk = models.FloatField(null=True, blank=True)  # Mobile Klinik Premium Parts
+    created = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        ordering = ['-created']  # Orders by date added, newest first
+
+
+        

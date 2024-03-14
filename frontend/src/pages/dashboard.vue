@@ -1,107 +1,81 @@
 <script setup>
-import AnalyticsCongratulations from '@/views/dashboard/AnalyticsCongratulations.vue'
-import AnalyticsFinanceTabs from '@/views/dashboard/AnalyticsFinanceTab.vue'
-import AnalyticsOrderStatistics from '@/views/dashboard/AnalyticsOrderStatistics.vue'
-import AnalyticsProfitReport from '@/views/dashboard/AnalyticsProfitReport.vue'
-import AnalyticsTotalRevenue from '@/views/dashboard/AnalyticsTotalRevenue.vue'
-import AnalyticsTransactions from '@/views/dashboard/AnalyticsTransactions.vue'
-
-import DemoSimpleTableFixedHeader from '@/views/pages/tables/Devices.vue'
+import ScrapperForm from '@/views/pages/scrapper-forms/ScrapperForm.vue'
+import Models from '@/views/pages/tables/Models.vue'
 
 // 👉 Images
 import chart from '@images/cards/chart-success.png'
-import card from '@images/cards/credit-card-primary.png'
 import paypal from '@images/cards/paypal-error.png'
 import wallet from '@images/cards/wallet-info.png'
+import axios from 'axios'
+
+
+const nbDevicesWithPrice = ref(null);
+const averagePhonePrice = ref(null);
+const mostExpensivePhone = ref(null);
+
+const fetchManufacturers = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:8000/api/devices/');
+    const devicesWithData = response.data.filter(device => device.last_price !== null);
+
+    // Calculate the number of devices with a price
+    nbDevicesWithPrice.value = devicesWithData.length;
+    // Calculate the average price of devices with a price
+    const totalPrices = devicesWithData.reduce((total, device) => total + device.last_price, 0);
+    mostExpensivePhone.value = devicesWithData.reduce((max, device) => max.last_price > device.last_price ? max : device).model_name;
+    console.log(mostExpensivePhone.value);
+    averagePhonePrice.value = totalPrices / nbDevicesWithPrice.value;
+    
+    //Round to one decimal place
+    averagePhonePrice.value = averagePhonePrice.value.toFixed(1);
+    averagePhonePrice.value = `$${averagePhonePrice.value}`;
+    nbDevicesWithPrice.value = `${nbDevicesWithPrice.value} Devices`;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+fetchManufacturers();
+
 </script>
 
 <template>
+
+  <VRow>
+    <!-- 👉 Ventes -->
+    <VCol cols="12" md="4">
+      <CardStatisticsVertical v-bind="{
+        title: 'Produits avec prix',
+        image: wallet,
+        stats: nbDevicesWithPrice,
+        change: nbDevicesWithPrice
+      }" />
+    </VCol>
+    <!-- 👉 Profits -->
+    <VCol cols="12" md="4">
+      <CardStatisticsVertical v-bind="{
+        title: 'Average Phone Price',
+        image: chart,
+        stats: averagePhonePrice,
+        change: 72.80,
+      }" />
+    </VCol><!-- 👉 Paiements -->
+    <VCol cols="12" sm="4">
+      <CardStatisticsVertical v-bind="{
+        title: 'Téléphone le plus cher',
+        image: paypal,
+        stats: mostExpensivePhone,
+        change: -14.82,
+      }" />
+    </VCol>
+  </VRow>
   <VRow>
     <VCol cols="12">
-      <VCard title="Devices">
-        <Devices />
+      <VCard title="Modèles">
+        <Models />
       </VCard>
     </VCol>
   </VRow>
   <VRow>
-    <!-- 👉 Congratulations -->
-    <VCol cols="12" md="8">
-      <AnalyticsCongratulations />
-    </VCol>
-
-    <VCol cols="12" sm="4">
-      <VRow>
-        <!-- 👉 Profit -->
-        <VCol cols="12" md="6">
-          <CardStatisticsVertical v-bind="{
-            title: 'Profit',
-            image: chart,
-            stats: '$12,628',
-            change: 72.80,
-          }" />
-        </VCol>
-
-        <!-- 👉 Sales -->
-        <VCol cols="12" md="6">
-          <CardStatisticsVertical v-bind="{
-            title: 'Sales',
-            image: wallet,
-            stats: '$4,679',
-            change: 28.42,
-          }" />
-        </VCol>
-      </VRow>
-    </VCol>
-
-    <!-- 👉 Total Revenue -->
-    <VCol cols="12" md="8" order="2" order-md="1">
-      <AnalyticsTotalRevenue />
-    </VCol>
-
-    <VCol cols="12" sm="8" md="4" order="1" order-md="2">
-      <VRow>
-        <!-- 👉 Payments -->
-        <VCol cols="12" sm="6">
-          <CardStatisticsVertical v-bind="{
-            title: 'Payments',
-            image: paypal,
-            stats: '$2,468',
-            change: -14.82,
-          }" />
-        </VCol>
-
-        <!-- 👉 Revenue -->
-        <VCol cols="12" sm="6">
-          <CardStatisticsVertical v-bind="{
-            title: 'Transactions',
-            image: card,
-            stats: '$14,857',
-            change: 28.14,
-          }" />
-        </VCol>
-      </VRow>
-
-      <VRow>
-        <!-- 👉 Profit Report -->
-        <VCol cols="12" sm="12">
-          <AnalyticsProfitReport />
-        </VCol>
-      </VRow>
-    </VCol>
-
-    <!-- 👉 Order Statistics -->
-    <VCol cols="12" md="4" sm="6" order="3">
-      <AnalyticsOrderStatistics />
-    </VCol>
-
-    <!-- 👉 Tabs chart -->
-    <VCol cols="12" md="4" sm="6" order="3">
-      <AnalyticsFinanceTabs />
-    </VCol>
-
-    <!-- 👉 Transactions -->
-    <VCol cols="12" md="4" sm="6" order="3">
-      <AnalyticsTransactions />
-    </VCol>
   </VRow>
 </template>

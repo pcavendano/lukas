@@ -1,10 +1,9 @@
 import os
 import django
 import requests
-import json
 from webscrapper.models import Manufacturer
-from webscrapper.models import Model
 from webscrapper.models import CategoryItem
+from webscrapper.models import Model
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 django.setup()
@@ -15,6 +14,7 @@ def scrape_and_save(url):
         # Envoyer une requête GET à l'URL
         response = requests.get(url)
         # Vérifier si la requête a réussi (code de statut 200)
+        print(response)
         if response.status_code == 200:
             # Convertir le contenu de la réponse en JSON
             json_data = response.json()

@@ -1,12 +1,20 @@
 <template>
-  <VForm @submit.prevent="submitForm">
+
+  <VForm @submit.prevent="submitForm" loading="true"  >
     <VRow>
       <VCol cols="12">
         <VRow no-gutters>
           <VCol cols="12" md="9">
+            <VLabel for="model">Remplissez Lukas avec la liste d'appareils<br> d'un fabricant spécifique</VLabel>
+          </VCol>
+        </VRow>
+      </VCol>
+      <VCol cols="12">
+        <VRow no-gutters>
+          <VCol cols="12" md="9">
             <!-- Dropdown input for selecting models -->
-            <VSelect v-model="selectedManufacturer" :items="manufacturers" item-title="manufacturer_name" item-value="manufacturer_code"
-              label="Sélectionnez un Manufacturer">
+            <VSelect v-model="selectedManufacturer" :items="manufacturers" item-title="manufacturer_name"
+              item-value="manufacturer_code" label="Sélectionnez un Manufacturer">
               <template #prepend-inner></template>
             </VSelect>
           </VCol>
@@ -22,13 +30,20 @@
           </div>
         </VRow>
       </VCol>
-
+      <VCol cols="12">
+        <VRow no-gutters>
+          <VCol cols="12" md="9">
+            <VLabel for="model">Remplissez Lukas avec le prix de<br> l'appareil sélectionné</VLabel>
+          </VCol>
+        </VRow>
+      </VCol>
       <VCol cols="12">
         <VRow no-gutters>
           <VCol cols="12" md="9">
             <!-- Dropdown input for selecting models -->
             <VSelect v-model="selectedModel" :items="models" item-title="model_name" item-value="model_name"
               label="Sélectionnez un modèle">
+
               <template #prepend-inner></template>
             </VSelect>
           </VCol>
@@ -47,7 +62,13 @@
           </div>
         </VRow>
       </VCol>
-
+      <VCol cols="12">
+        <VRow no-gutters>
+            <VCol cols="12" md="9">
+            <VLabel for="model">Selecctionnez le site sur lesquel<br> vous voulez trouver linformation</VLabel>
+          </VCol>
+        </VRow>
+      </VCol>
       <VCol cols="12">
         <VRow no-gutters>
           <VCol cols="12" md="9">
@@ -66,7 +87,7 @@
         <VRow no-gutters>
           <!-- Display success message -->
           <div v-if="success">
-          <h2 style="color: green;">{{ success }}</h2>
+            <h2 style="color: green;">{{ success }}</h2>
           </div>
         </VRow>
       </VCol>
@@ -150,7 +171,7 @@ const submitForm = () => {
       .catch(error => {
         console.error(error);
       });
-};
+  };
 };
 
 const updateManufacturers = () => {

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from webscrapper.models import Model, Manufacturer, ModelPrice
+from webscrapper.models import Model, Manufacturer, ModelPrice, RepairPrices
 
 class ManufacturerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,4 +23,9 @@ class ModelsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Model
+        fields = '__all__'
+
+class RepairPricesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RepairPrices
         fields = '__all__'

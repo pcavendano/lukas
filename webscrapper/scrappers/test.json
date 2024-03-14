@@ -1,0 +1,514 @@
+{
+    "manufacturers": [
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 20,
+            "manufacturer_code": "AC",
+            "manufacturer_name": "Acer"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "1",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 10,
+            "manufacturer_code": "AL",
+            "manufacturer_name": "Alcatel"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "1",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 8,
+            "manufacturer_code": "AP",
+            "manufacturer_name": "Apple"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 28,
+            "manufacturer_code": "AS",
+            "manufacturer_name": "Asus"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "1",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 12,
+            "manufacturer_code": "RI",
+            "manufacturer_name": "Blackberry"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 21,
+            "manufacturer_code": "CA",
+            "manufacturer_name": "CAT"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 22,
+            "manufacturer_code": "CE",
+            "manufacturer_name": "CentraLite"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 25,
+            "manufacturer_code": "DO",
+            "manufacturer_name": "DORO"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 23,
+            "manufacturer_code": "DE",
+            "manufacturer_name": "Dell"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 280,
+            "manufacturer_code": "UN",
+            "manufacturer_name": "Fossil"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "1",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 32,
+            "manufacturer_code": "GG",
+            "manufacturer_name": "Google"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "1",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 11,
+            "manufacturer_code": "HT",
+            "manufacturer_name": "HTC"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "1",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 3,
+            "manufacturer_code": "HU",
+            "manufacturer_name": "Huawei"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 27,
+            "manufacturer_code": "KY",
+            "manufacturer_name": "KYOCERA"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "1",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 9,
+            "manufacturer_code": "LG",
+            "manufacturer_name": "LG"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "1",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 4,
+            "manufacturer_code": "MO",
+            "manufacturer_name": "Motorola"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 26,
+            "manufacturer_code": "NC",
+            "manufacturer_name": "NetComm"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 31,
+            "manufacturer_code": "NR",
+            "manufacturer_name": "Netgear"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 13,
+            "manufacturer_code": "NO",
+            "manufacturer_name": "Nokia"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 5,
+            "manufacturer_code": "NV",
+            "manufacturer_name": "Novatel"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "1",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 210,
+            "manufacturer_code": "ONEPLUS",
+            "manufacturer_name": "OnePlus"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 19,
+            "manufacturer_code": "OT",
+            "manufacturer_name": "Other"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 214,
+            "manufacturer_code": "PACE",
+            "manufacturer_name": "PACE"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 15,
+            "manufacturer_code": "PL",
+            "manufacturer_name": "Palm"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 223,
+            "manufacturer_code": "RCA",
+            "manufacturer_name": "RCA"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 647,
+            "manufacturer_code": "ST",
+            "manufacturer_name": "SIYATA"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 2,
+            "manufacturer_code": "SM",
+            "manufacturer_name": "SONIM"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 213,
+            "manufacturer_code": "N/A",
+            "manufacturer_name": "Sagemcom"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "1",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 6,
+            "manufacturer_code": "SG",
+            "manufacturer_name": "Samsung"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 16,
+            "manufacturer_code": "SY",
+            "manufacturer_name": "Sanyo"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 7,
+            "manufacturer_code": "SW",
+            "manufacturer_name": "Sierra Wireless"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "1",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 1,
+            "manufacturer_code": "ER",
+            "manufacturer_name": "Sony"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 268,
+            "manufacturer_code": "TL",
+            "manufacturer_name": "TCL"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 644,
+            "manufacturer_code": "UN",
+            "manufacturer_name": "TLC"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 279,
+            "manufacturer_code": "XM",
+            "manufacturer_name": "XIAOMI"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 17,
+            "manufacturer_code": "ZT",
+            "manufacturer_name": "ZTE"
+        },
+        {
+            "parameters": [
+                {
+                    "param_code": "TRADEIN",
+                    "param_type": "BOOLEAN",
+                    "param_value": "0",
+                    "param_default": "1"
+                }
+            ],
+            "manufacturer_id": 18,
+            "manufacturer_code": "IM",
+            "manufacturer_name": "i-mate"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 646,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 645,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 643,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 642,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 641,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 640,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 281,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 278,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 277,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 276,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 275,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 274,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 273,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 272,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 270,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 269,
+            "manufacturer_code": "UN"
+        },
+        {
+            "parameters": null,
+            "manufacturer_id": 271,
+            "manufacturer_code": "UN"
+        }
+    ]
+}
